@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>$RUGAPE — The Rug Pull Champion | Solana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06080c;
+  --green:#00FFA3;
+  --orange:#FF5E00;
+  --card-bg:rgba(0,255,163,0.04);
+  --card-border:rgba(0,255,163,0.15);
+  --orange-glow:0 0 20px rgba(255,94,0,0.4),0 0 60px rgba(255,94,0,0.15);
+  --green-glow:0 0 20px rgba(0,255,163,0.4),0 0 60px rgba(0,255,163,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:#e8f5ff;font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;min-height:100vh}
+canvas#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.5}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:100;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,8,12,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,255,163,0.12)}
+.logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(1.1rem,3vw,1.5rem);color:var(--green);text-shadow:0 0 20px rgba(0,255,163,0.6);letter-spacing:2px}
+.logo span{color:var(--orange)}
+.nav-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.social-links{display:flex;gap:8px}
+.social-links a{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--card-border);border-radius:8px;color:var(--green);text-decoration:none;font-size:14px;transition:all .3s;background:rgba(0,255,163,0.05)}
+.social-links a:hover{border-color:var(--green);box-shadow:var(--green-glow);transform:translateY(-2px)}
+.btn-wallet{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;padding:9px 16px;border:1.5px solid var(--orange);background:rgba(255,94,0,0.12);color:var(--orange);border-radius:8px;cursor:pointer;transition:all .3s;letter-spacing:1px}
+.btn-wallet:hover{background:var(--orange);color:var(--bg);box-shadow:var(--orange-glow)}
+
+/* HERO */
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;padding:100px 20px 60px;max-width:1200px;margin:0 auto}
+.hero-content{flex:1;padding-right:20px}
+.hero-tag{display:inline-block;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:600;letter-spacing:3px;color:var(--orange);border:1px solid rgba(255,94,0,0.4);padding:6px 14px;border-radius:4px;margin-bottom:20px;background:rgba(255,94,0,0.08)}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,4.5vw,3.2rem);font-weight:900;line-height:1.15;margin-bottom:24px;text-transform:uppercase}
+.hero h1 .highlight{color:var(--green);text-shadow:var(--green-glow)}
+.hero h1 .burn{color:var(--orange);text-shadow:var(--orange-glow)}
+.hero-desc{font-size:clamp(0.9rem,2vw,1.05rem);color:rgba(232,245,255,0.7);line-height:1.8;max-width:520px;margin-bottom:32px;font-weight:300}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:36px}
+.btn-primary{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;padding:14px 28px;background:var(--green);color:var(--bg);border:none;border-radius:10px;cursor:pointer;transition:all .3s;letter-spacing:1.5px;text-transform:uppercase}
+.btn-primary:hover{box-shadow:var(--green-glow);transform:translateY(-2px)}
+.btn-secondary{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;padding:14px 28px;background:transparent;color:var(--orange);border:1.5px solid var(--orange);border-radius:10px;cursor:pointer;transition:all .3s;letter-spacing:1.5px;text-transform:uppercase}
+.btn-secondary:hover{background:rgba(255,94,0,0.15);box-shadow:var(--orange-glow);transform:translateY(-2px)}
+
+/* CA BOX */
+.ca-box{background:rgba(0,255,163,0.05);border:1px solid rgba(0,255,163,0.2);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;max-width:500px;position:relative}
+.ca-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--green);white-space:nowrap;opacity:0.8}
+.ca-address{font-family:'Orbitron',sans-serif;font-size:clamp(0.5rem,1.5vw,0.7rem);color:rgba(232,245,255,0.7);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn-copy{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;padding:8px 14px;background:rgba(0,255,163,0.1);color:var(--green);border:1px solid var(--green);border-radius:7px;cursor:pointer;transition:all .3s;white-space:nowrap;letter-spacing:1px}
+.btn-copy:hover{background:var(--green);color:var(--bg)}
+.copy-toast{position:absolute;top:-40px;right:0;background:var(--green);color:var(--bg);font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;padding:6px 14px;border-radius:6px;opacity:0;transition:opacity .3s;pointer-events:none}
+.copy-toast.show{opacity:1}
+
+/* MASCOT */
+.hero-mascot{flex:0 0 auto;width:clamp(280px,40vw,460px);position:relative}
+.mascot-frame{border:3px dashed var(--orange);border-radius:20px;padding:6px;position:relative}
+.mascot-frame::before{content:'';position:absolute;inset:-6px;border-radius:24px;background:radial-gradient(ellipse at center,rgba(255,94,0,0.1) 0%,transparent 70%);animation:pulse-orange 3s ease-in-out infinite}
+.mascot-img{width:100%;border-radius:16px;display:block;filter:saturate(1.1)}
+.mascot-badge{position:absolute;top:-12px;right:-12px;background:var(--orange);color:var(--bg);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;padding:6px 10px;border-radius:6px;letter-spacing:1px;box-shadow:var(--orange-glow)}
+
+/* MARQUEE */
+.ticker-wrap{background:rgba(255,94,0,0.08);border-top:1px solid rgba(255,94,0,0.2);border-bottom:1px solid rgba(255,94,0,0.2);padding:10px 0;overflow:hidden;position:relative;z-index:1}
+.ticker-inner{display:flex;white-space:nowrap;animation:ticker 20s linear infinite}
+.ticker-item{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:600;color:var(--orange);margin:0 30px;letter-spacing:2px}
+.ticker-sep{color:rgba(255,94,0,0.5)}
+
+/* SECTIONS */
+.section{position:relative;z-index:1;padding:80px 20px;max-width:1200px;margin:0 auto}
+.section-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.2rem,3vw,2rem);font-weight:900;text-align:center;margin-bottom:12px;text-transform:uppercase}
+.section-title .g{color:var(--green)}
+.section-title .o{color:var(--orange)}
+.section-sub{text-align:center;color:rgba(232,245,255,0.55);font-size:0.95rem;margin-bottom:48px;max-width:480px;margin-left:auto;margin-right:auto}
+
+/* TOKENOMICS GRID */
+.toke-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.toke-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:28px 22px;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.toke-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top,rgba(0,255,163,0.06) 0%,transparent 70%);opacity:0;transition:opacity .4s}
+.toke-card:hover::before{opacity:1}
+.toke-card:hover{border-color:rgba(0,255,163,0.4);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,255,163,0.1)}
+.toke-icon{font-size:2.2rem;margin-bottom:14px}
+.toke-value{font-family:'Orbitron',sans-serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:900;color:var(--green);text-shadow:var(--green-glow);margin-bottom:8px}
+.toke-label{font-size:0.85rem;color:rgba(232,245,255,0.6);letter-spacing:1px;font-weight:500}
+
+/* HOW TO BUY */
+.steps{display:flex;flex-direction:column;gap:20px;max-width:700px;margin:0 auto}
+.step-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:24px 24px;display:flex;align-items:flex-start;gap:20px;transition:all .4s;cursor:default}
+.step-card:hover{border-color:rgba(255,94,0,0.4);transform:translateX(8px);box-shadow:0 10px 40px rgba(255,94,0,0.1)}
+.step-num{font-family:'Orbitron',sans-serif;font-size:clamp(2rem,5vw,3rem);font-weight:900;color:var(--orange);text-shadow:var(--orange-glow);line-height:1;flex-shrink:0;min-width:50px}
+.step-content h3{font-family:'Orbitron',sans-serif;font-size:clamp(0.9rem,2vw,1.1rem);font-weight:700;color:var(--green);margin-bottom:8px;letter-spacing:1px}
+.step-content p{color:rgba(232,245,255,0.65);font-size:0.9rem;line-height:1.7;font-weight:300}
+
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid rgba(0,255,163,0.1);padding:40px 20px 24px;text-align:center}
+.disclaimer{max-width:700px;margin:0 auto 28px;color:rgba(232,245,255,0.4);font-size:0.78rem;line-height:1.8}
+.disclaimer strong{color:rgba(232,245,255,0.6)}
+.copyright{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:rgba(0,255,163,0.5);text-transform:uppercase}
+
+/* ANIMATIONS */
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes pulse-orange{0%,100%{opacity:0.3}50%{opacity:0.7}}
+@keyframes glow-pulse{0%,100%{text-shadow:0 0 20px rgba(0,255,163,0.4),0 0 60px rgba(0,255,163,0.15)}50%{text-shadow:0 0 30px rgba(0,255,163,0.7),0 0 90px rgba(0,255,163,0.3)}}
+.logo{animation:glow-pulse 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0px)}50%{transform:translateY(-12px)}}
+.mascot-frame{animation:float 4s ease-in-out infinite}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* DIVIDER */
+.divider{height:1px;background:linear-gradient(to right,transparent,rgba(0,255,163,0.2),transparent);margin:0 auto;max-width:900px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero{flex-direction:column;text-align:center;padding:90px 16px 50px}
+  .hero-content{padding-right:0;margin-bottom:36px}
+  .hero-desc{margin:0 auto 28px}
+  .hero-cta{justify-content:center}
+  .ca-box{max-width:100%}
+  .hero-mascot{width:min(320px,88vw);margin:0 auto}
+  .social-links a{width:32px;height:32px}
+}
+@media(max-width:480px){
+  .ca-address{font-size:0.5rem}
+  .btn-wallet{font-size:10px;padding:8px 12px}
+}
+</style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">$RUGAPE<span>🐒</span></div>
+  <div class="nav-right">
+    <div class="social-links">
+      <a href="#" title="X/Twitter" aria-label="X">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="#" title="Telegram" aria-label="Telegram">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      </a>
+      <a href="#" title="Dexscreener" aria-label="Dexscreener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </a>
+    </div>
+    <button class="btn-wallet" onclick="alert('Connect your wallet via Phantom or Solflare!')">🔌 CONNECT</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div style="position:relative;z-index:1">
+<section style="max-width:1200px;margin:0 auto;padding:100px 20px 60px;display:flex;align-items:center;flex-wrap:wrap;gap:40px">
+  <div class="hero-content" style="flex:1;min-width:280px">
+    <div class="hero-tag">⚡ SOLANA NETWORK · 2025</div>
+    <h1 style="font-family:'Orbitron',sans-serif;font-size:clamp(1.5rem,4.5vw,3rem);font-weight:900;line-height:1.15;margin-bottom:20px;text-transform:uppercase">
+      THE DEV LAUGHED,<br>
+      BUT <span style="color:var(--green);text-shadow:var(--green-glow)">$RUGAPE</span><br>
+      <span style="color:var(--orange);text-shadow:var(--orange-glow)">TOOK THE RUG!</span>
+    </h1>
+    <p class="hero-desc">
+      The memecoin that mocks the mockers. Every rugpull artist thought they won —
+      until <strong>$RUGAPE</strong> turned the game upside down. Community holds. Dev runs. 
+      But the <span style="color:var(--green)">bags stay full</span>. 🦍💸
+    </p>
+    <div class="hero-cta">
+      <button class="btn-primary">🚀 BUY $RUGAPE</button>
+      <button class="btn-secondary">📊 VIEW CHART</button>
+    </div>
+    <div class="ca-box" style="position:relative">
+      <div>
+        <div class="ca-label">CONTRACT ADDRESS</div>
+        <div class="ca-address" id="ca-text">RuGApExxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+      </div>
+      <button class="btn-copy" onclick="copyCA()">COPY</button>
+      <div class="copy-toast" id="copy-toast">✓ COPIED!</div>
+    </div>
+  </div>
+  <div class="hero-mascot" style="flex:0 0 auto;width:clamp(260px,38vw,440px)">
+    <div class="mascot-frame"style="position:relative">
+      <div class="mascot-badge">RUG PULL CHAMP</div>
+      <img src="fotoku.png" alt="Rug Pull Champ" style="display: block; width: 100%; max-width: 450px; padding: 12px; border: 3px dashed #ff6600; border-radius: 24px; box-sizing: border-box;">
+</div>
+  </div>
+</section>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <span class="ticker-item">$RUGAPE 🐒</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">RUG PULL CHAMP</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">DEV LAUGHED LAST</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">1B SUPPLY</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">0% TAX</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">LP BURNED 🔥</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">SOLANA NETWORK</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">$RUGAPE 🐒</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">RUG PULL CHAMP</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">DEV LAUGHED LAST</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">1B SUPPLY</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">0% TAX</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">LP BURNED 🔥</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">SOLANA NETWORK</span><span class="ticker-sep">•</span>
+  </div>
+  </div>
+
+<!-- TOKENOMICS -->
+<section class="section">
+  <h2 class="section-title reveal">ABOUT &amp; <span class="g">TOKENOMICS</span></h2>
+  <p class="section-sub reveal">Total transparency. No bullsh*t. Just vibes &amp; a monkey with a bag.</p>
+  <div class="toke-grid reveal">
+    <div class="toke-card">
+      <div class="toke-icon">💰</div>
+      <div class="toke-value">1 BILLION</div>
+      <div class="toke-label">TOTAL SUPPLY</div>
+    </div>
+    <div class="toke-card">
+      <div class="toke-icon">🚫</div>
+      <div class="toke-value">0%</div>
+      <div class="toke-label">BUY / SELL TAX</div>
+    </div>
+    <div class="toke-card">
+      <div class="toke-icon">🔥</div>
+      <div class="toke-value">100%</div>
+      <div class="toke-label">LP BURNED</div>
+    </div>
+    <div class="toke-card">
+      <div class="toke-icon">🔒</div>
+      <div class="toke-value">REVOKED</div>
+      <div class="toke-label">MINT &amp; FREEZE</div>
+    </div>
+  </div>
+  </section>
+
+<div class="divider"></div>
+
+<!-- HOW TO BUY -->
+<section class="section">
+  <h2 class="section-title reveal">HOW TO <span class="o">BUY</span></h2>
+  <p class="section-sub reveal">Three steps. That's it. Even the dev can follow this — except he already ran. 🐒</p>
+  <div class="steps">
+    <div class="step-card reveal">
+      <div class="step-num">01</div>
+      <div class="step-content">
+        <h3>🦊 GET A SOLANA WALLET</h3>
+        <p>Download <strong>Phantom</strong> or <strong>Solflare</strong> wallet. Create your account and securely store your seed phrase. Never share it — not even with the dev (especially not the dev).</p>
+      </div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num">02</div>
+      <div class="step-content">
+        <h3>⚡ FUND WITH SOL</h3>
+        <p>Buy <strong>SOL</strong> from any major exchange (Binance, Coinbase, Kraken). Transfer it to your Phantom wallet. You'll need SOL for the swap and gas fees.</p>
+      </div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <h3>🐒 SWAP FOR $RUGAPE</h3>
+        <p>Head to <strong>Raydium</strong> or <strong>Jupiter</strong>, paste the contract address, and swap your SOL for <strong>$RUGAPE</strong>. Welcome to the rug pull revolution — hold tight!</p>
+      </div>
+      </div>
+    <div class="step-card reveal">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <h3>🐒 SWAP FOR $RUGAPE</h3>
+        <p>Head to <strong>Raydium</strong> or <strong>Jupiter</strong>, paste the contract address, and swap your SOL for <strong>$RUGAPE</strong>. Welcome to the rug pull revolution — hold tight!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="disclaimer">
+    <strong>⚠️ DISCLAIMER:</strong> $RUGAPE is a satirical meme coin created for entertainment purposes only. This is NOT financial advice. Cryptocurrency investments carry extreme risk — you could lose all your money. Only invest what you can afford to lose. This project does not guarantee any returns. DYOR (Do Your Own Research) before investing in any crypto asset. The team is not responsible for any financial losses.
+  </p>
+  <div class="copyright">© 2026 AL ANSHORI. ALL RIGHTS RESERVED.</div>
+</footer>
+
+<script>
+// PARTICLES
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+function Particle(){
+  this.x=Math.random()*W;this.y=Math.random()*H;
+  this.r=Math.random()*1.5+0.5;
+  this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;
+  this.life=Math.random();
+  this.color=Math.random()>.5?'0,255,163':'255,94,0';
+}
+for(let i=0;i<80;i++)particles.push(new Particle());
+function animate(){
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{
+    p.life+=0.003;if(p.life>1)p.life=0;
+    const a=Math.sin(p.life*Math.PI)*.6;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${p.color},${a})`;ctx.fill();
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+    if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// COPY CA
+function copyCA(){
+  const ca=document.getElementById('ca-text').textContent;
+  navigator.clipboard.writeText(ca).catch(()=>{});
+  const t=document.getElementById('copy-toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// SCROLL REVEAL
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
