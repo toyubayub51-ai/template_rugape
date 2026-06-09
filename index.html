@@ -2,1038 +2,329 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>$PINGU — The Coolest Coin on SUI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>$RUGAPE — The Rug Pull Champion | Solana</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:       #050D18;
-  --bg2:      #080F1F;
-  --card:     #0A1628;
-  --card2:    #0D1E35;
-  --cyan:     #00D4FF;
-  --cyan2:    #00A8D4;
-  --blue:     #4A90E2;
-  --blue2:    #2D6BC4;
-  --ice:      #B8D4F0;
-  --ice2:     #7AABDC;
-  --gold:     #FFD166;
-  --gold2:    #F4A835;
-  --white:    rgba(255,255,255,0.9);
-  --muted:    rgba(255,255,255,0.4);
-  --border:   rgba(0,212,255,0.15);
-  --orb:      'Orbitron',sans-serif;
-  --fredoka:  'Fredoka One',cursive;
-  --nunito:   'Nunito',sans-serif;
+  --bg:#06080c;
+  --green:#00FFA3;
+  --orange:#FF5E00;
+  --card-bg:rgba(0,255,163,0.04);
+  --card-border:rgba(0,255,163,0.15);
+  --orange-glow:0 0 20px rgba(255,94,0,0.4),0 0 60px rgba(255,94,0,0.15);
+  --green-glow:0 0 20px rgba(0,255,163,0.4),0 0 60px rgba(0,255,163,0.15);
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+*{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:var(--nunito);background:var(--bg);color:white;overflow-x:hidden}
-a{text-decoration:none}
+body{background:var(--bg);color:#e8f5ff;font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;min-height:100vh}
+canvas#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.5}
 
-/* ══ ANIMATED BACKGROUND ══ */
-.bg-scene{
-  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
-}
-/* Deep space gradient */
-.bg-base{
-  position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 0%,   rgba(0,100,200,0.18) 0%,transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 80%,   rgba(0,212,255,0.08) 0%,transparent 55%),
-    radial-gradient(ellipse 50% 50% at 10% 60%,   rgba(74,144,226,0.07) 0%,transparent 55%),
-    #050D18;
-}
-/* Circuit grid */
-.circuit{
-  position:absolute;inset:0;
-   background-image:
-    linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
-  background-size:48px 48px;
-  animation:circuit-drift 20s linear infinite;
-}
-@keyframes circuit-drift{
-  0%{background-position:0 0}
-  100%{background-position:48px 48px}
-}
-/* Ice/snow particles */
-.snow{
-  position:absolute;border-radius:50%;background:white;
-  animation:snow-fall linear infinite;
-}
-@keyframes snow-fall{
-  0%{transform:translateY(-20px) translateX(0) rotate(0);opacity:0}
-  10%{opacity:0.6}
-  90%{opacity:0.3}
-  100%{transform:translateY(110vh) translateX(var(--dx)) rotate(360deg);opacity:0}
-}
-/* Glow orbs */
-.orb{
-  position:absolute;border-radius:50%;filter:blur(80px);
-  animation:orb-pulse ease-in-out infinite;
-}
-@keyframes orb-pulse{
-  0%,100%{transform:translate(0,0) scale(1);opacity:0.5}
-  50%{transform:translate(var(--ox),var(--oy)) scale(1.1);opacity:0.8}
-}
-/* Scan line */
-.scanline{
-  position:absolute;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,rgba(0,212,255,0.4),transparent);
-  animation:scan 6s linear infinite;
-}
-@keyframes scan{
-  0%{top:-2px;opacity:0}
-  5%{opacity:1}
-  95%{opacity:0.6}
-  100%{top:100%;opacity:0}
-}
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:100;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(6,8,12,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,255,163,0.12)}
+.logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(1.1rem,3vw,1.5rem);color:var(--green);text-shadow:0 0 20px rgba(0,255,163,0.6);letter-spacing:2px}
+.logo span{color:var(--orange)}
+.nav-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.social-links{display:flex;gap:8px}
+.social-links a{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--card-border);border-radius:8px;color:var(--green);text-decoration:none;font-size:14px;transition:all .3s;background:rgba(0,255,163,0.05)}
+.social-links a:hover{border-color:var(--green);box-shadow:var(--green-glow);transform:translateY(-2px)}
+.btn-wallet{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;padding:9px 16px;border:1.5px solid var(--orange);background:rgba(255,94,0,0.12);color:var(--orange);border-radius:8px;cursor:pointer;transition:all .3s;letter-spacing:1px}
+.btn-wallet:hover{background:var(--orange);color:var(--bg);box-shadow:var(--orange-glow)}
 
-/* ══ NAV ══ */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 20px;
-  background:rgba(5,13,24,0.8);
-  backdrop-filter:blur(24px);
-   border-bottom:1px solid var(--border);
-}
-.nav-logo{
-  font-family:var(--fredoka);
-  font-size:24px;letter-spacing:2px;
-  color:var(--cyan);
-  text-shadow:0 0 16px rgba(0,212,255,0.5);
-}
-.nav-links{display:flex;gap:8px;align-items:center}
-.nav-links a{
-  font-family:var(--nunito);
-  font-size:12px;font-weight:800;letter-spacing:1px;
-  text-transform:uppercase;color:var(--muted);
-  padding:7px 12px;border-radius:6px;
-  transition:all .2s;white-space:nowrap;
-}
-.nav-links a:hover{color:var(--cyan);background:rgba(0,212,255,0.06)}
-.nav-buy{
-  color:var(--bg)!important;
-  background:linear-gradient(135deg,var(--cyan),var(--blue))!important;
-  font-weight:900!important;
-  box-shadow:0 3px 14px rgba(0,212,255,0.4);
-}
-.nav-buy:hover{transform:translateY(-2px);box-shadow:0 5px 22px rgba(0,212,255,0.6)!important}
+/* HERO */
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;padding:100px 20px 60px;max-width:1200px;margin:0 auto}
+.hero-content{flex:1;padding-right:20px}
+.hero-tag{display:inline-block;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:600;letter-spacing:3px;color:var(--orange);border:1px solid rgba(255,94,0,0.4);padding:6px 14px;border-radius:4px;margin-bottom:20px;background:rgba(255,94,0,0.08)}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,4.5vw,3.2rem);font-weight:900;line-height:1.15;margin-bottom:24px;text-transform:uppercase}
+.hero h1 .highlight{color:var(--green);text-shadow:var(--green-glow)}
+.hero h1 .burn{color:var(--orange);text-shadow:var(--orange-glow)}
+.hero-desc{font-size:clamp(0.9rem,2vw,1.05rem);color:rgba(232,245,255,0.7);line-height:1.8;max-width:520px;margin-bottom:32px;font-weight:300}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:36px}
+.btn-primary{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;padding:14px 28px;background:var(--green);color:var(--bg);border:none;border-radius:10px;cursor:pointer;transition:all .3s;letter-spacing:1.5px;text-transform:uppercase}
+.btn-primary:hover{box-shadow:var(--green-glow);transform:translateY(-2px)}
+.btn-secondary{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;padding:14px 28px;background:transparent;color:var(--orange);border:1.5px solid var(--orange);border-radius:10px;cursor:pointer;transition:all .3s;letter-spacing:1.5px;text-transform:uppercase}
+.btn-secondary:hover{background:rgba(255,94,0,0.15);box-shadow:var(--orange-glow);transform:translateY(-2px)}
 
-/* ══ HERO ══ */
-.hero{
-  position:relative;z-index:1;
-  min-height:100vh;
-  display:flex;flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:80px 20px 60px;
-  text-align:center;
-  overflow:hidden;
-}
+/* CA BOX */
+.ca-box{background:rgba(0,255,163,0.05);border:1px solid rgba(0,255,163,0.2);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;max-width:500px;position:relative}
+.ca-label{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:var(--green);white-space:nowrap;opacity:0.8}
+.ca-address{font-family:'Orbitron',sans-serif;font-size:clamp(0.5rem,1.5vw,0.7rem);color:rgba(232,245,255,0.7);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn-copy{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;padding:8px 14px;background:rgba(0,255,163,0.1);color:var(--green);border:1px solid var(--green);border-radius:7px;cursor:pointer;transition:all .3s;white-space:nowrap;letter-spacing:1px}
+.btn-copy:hover{background:var(--green);color:var(--bg)}
+.copy-toast{position:absolute;top:-40px;right:0;background:var(--green);color:var(--bg);font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;padding:6px 14px;border-radius:6px;opacity:0;transition:opacity .3s;pointer-events:none}
+.copy-toast.show{opacity:1}
 
-/* Coin image with glow */
-.coin-wrap{
-  position:relative;
-  margin-bottom:32px;
-  animation:coin-float 4.5s ease-in-out infinite;
-}
-@keyframes coin-float{
-  0%,100%{transform:translateY(0) rotate(-1.5deg)}
-  50%{transform:translateY(-20px) rotate(1.5deg)}
-}
-.coin-img{
-  width:min(260px, 65vw);
-  height:min(260px, 65vw);
-    border-radius:50%;
-  display:block;
-  position:relative;z-index:2;
-  filter:drop-shadow(0 0 30px rgba(0,212,255,0.5)) drop-shadow(0 20px 40px rgba(0,0,0,0.6));
-}
-/* Spinning ring around coin */
-.coin-ring{
-  position:absolute;inset:-16px;
-  border-radius:50%;
-  border:2px solid transparent;
-  background:
-    linear-gradient(var(--bg),var(--bg)) padding-box,
-    conic-gradient(from 0deg, var(--cyan),transparent,var(--blue),transparent,var(--cyan)) border-box;
-  animation:ring-spin 4s linear infinite;
-  z-index:1;
-}
-@keyframes ring-spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-.coin-ring2{
-  position:absolute;inset:-28px;
-  border-radius:50%;
-  border:1px solid transparent;
-  background:
-    linear-gradient(var(--bg),var(--bg)) padding-box,
-    conic-gradient(from 180deg, transparent,var(--blue2),transparent,var(--cyan),transparent) border-box;
-  animation:ring-spin 8s linear infinite reverse;
-  z-index:1;
-}
-/* Coin shadow */
-.coin-shadow{
-  position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);
-  width:70%;height:16px;
-  background:radial-gradient(ellipse,rgba(0,212,255,0.2) 0%,transparent 70%);
-  border-radius:50%;
-  animation:shadow-coin 4.5s ease-in-out infinite;
-}
-@keyframes shadow-coin{
-  0%,100%{transform:translateX(-50%) scaleX(1);opacity:0.6}
-  50%{transform:translateX(-50%) scaleX(0.7);opacity:0.25}
-}
+/* MASCOT */
+.hero-mascot{flex:0 0 auto;width:clamp(280px,40vw,460px);position:relative}
+.mascot-frame{border:3px dashed var(--orange);border-radius:20px;padding:6px;position:relative}
+.mascot-frame::before{content:'';position:absolute;inset:-6px;border-radius:24px;background:radial-gradient(ellipse at center,rgba(255,94,0,0.1) 0%,transparent 70%);animation:pulse-orange 3s ease-in-out infinite}
+.mascot-img{width:100%;border-radius:16px;display:block;filter:saturate(1.1)}
+.mascot-badge{position:absolute;top:-12px;right:-12px;background:var(--orange);color:var(--bg);font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;padding:6px 10px;border-radius:6px;letter-spacing:1px;box-shadow:var(--orange-glow)}
 
-/* Badge */
-.hero-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(0,212,255,0.08);
-  border:1.5px solid rgba(0,212,255,0.2);
-  border-radius:50px;
-  padding:8px 18px;
-  font-family:var(--nunito);
-    font-size:11px;font-weight:900;letter-spacing:2px;
-  text-transform:uppercase;color:var(--cyan);
-  margin-bottom:20px;
-}
-.live-dot{
-  width:7px;height:7px;border-radius:50%;
-  background:var(--cyan);
-  animation:live-pulse 1.5s ease-in-out infinite;
-}
-@keyframes live-pulse{
-  0%,100%{box-shadow:0 0 0 0 rgba(0,212,255,0.4)}
-  50%{box-shadow:0 0 0 6px rgba(0,212,255,0)}
-}
+/* MARQUEE */
+.ticker-wrap{background:rgba(255,94,0,0.08);border-top:1px solid rgba(255,94,0,0.2);border-bottom:1px solid rgba(255,94,0,0.2);padding:10px 0;overflow:hidden;position:relative;z-index:1}
+.ticker-inner{display:flex;white-space:nowrap;animation:ticker 20s linear infinite}
+.ticker-item{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:600;color:var(--orange);margin:0 30px;letter-spacing:2px}
+.ticker-sep{color:rgba(255,94,0,0.5)}
 
-/* Title */
-.hero-title{
-  font-family:var(--fredoka);
-  font-size:clamp(64px,18vw,120px);
-  line-height:0.95;letter-spacing:4px;
-  background:linear-gradient(180deg,#FFFFFF 0%,var(--cyan) 50%,var(--blue) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  margin-bottom:10px;
-  filter:drop-shadow(0 0 30px rgba(0,212,255,0.3));
-  animation:title-glow 4s ease-in-out infinite;
-}
-@keyframes title-glow{
-  0%,100%{filter:drop-shadow(0 0 20px rgba(0,212,255,0.3))}
-  50%{filter:drop-shadow(0 0 40px rgba(0,212,255,0.6))}
-}
-.hero-sub{
-  font-family:var(--fredoka);
-  font-size:clamp(16px,4.5vw,26px);
-  letter-spacing:4px;color:var(--ice2);
-  margin-bottom:18px;
-  text-transform:uppercase;
-}
-.hero-desc{
-  font-size:14px;font-weight:700;
-  color:var(--muted);line-height:1.75;
-  max-width:460px;margin:0 auto 32px;
-}
-.hero-desc strong{color:rgba(255,255,255,0.9)}
+/* SECTIONS */
+.section{position:relative;z-index:1;padding:80px 20px;max-width:1200px;margin:0 auto}
+.section-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.2rem,3vw,2rem);font-weight:900;text-align:center;margin-bottom:12px;text-transform:uppercase}
+.section-title .g{color:var(--green)}
+.section-title .o{color:var(--orange)}
+.section-sub{text-align:center;color:rgba(232,245,255,0.55);font-size:0.95rem;margin-bottom:48px;max-width:480px;margin-left:auto;margin-right:auto}
 
-/* Stats */
-.stats-row{
-  display:flex;justify-content:center;gap:24px;
-  flex-wrap:wrap;margin-bottom:32px;
-}
-.stat{text-align:center}
-.stat-val{
-  font-family:var(--orb);
-  font-size:26px;font-weight:900;
-  color:var(--cyan);
-    display:block;line-height:1;
-  text-shadow:0 0 16px rgba(0,212,255,0.4);
-}
-.stat-lbl{
-  font-size:10px;font-weight:800;
-  text-transform:uppercase;letter-spacing:2px;
-  color:rgba(255,255,255,0.3);
-  margin-top:4px;display:block;
-}
+/* TOKENOMICS GRID */
+.toke-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.toke-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:28px 22px;text-align:center;transition:all .4s;position:relative;overflow:hidden}
+.toke-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top,rgba(0,255,163,0.06) 0%,transparent 70%);opacity:0;transition:opacity .4s}
+.toke-card:hover::before{opacity:1}
+.toke-card:hover{border-color:rgba(0,255,163,0.4);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,255,163,0.1)}
+.toke-icon{font-size:2.2rem;margin-bottom:14px}
+.toke-value{font-family:'Orbitron',sans-serif;font-size:clamp(1.3rem,3vw,1.8rem);font-weight:900;color:var(--green);text-shadow:var(--green-glow);margin-bottom:8px}
+.toke-label{font-size:0.85rem;color:rgba(232,245,255,0.6);letter-spacing:1px;font-weight:500}
 
-/* Buttons */
-.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.btn-cyan{
-  display:inline-flex;align-items:center;gap:8px;
-  font-family:var(--nunito);font-size:14px;font-weight:900;
-  letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--bg);
-  background:linear-gradient(135deg,var(--cyan),var(--blue));
-  padding:14px 28px;border-radius:10px;
-  box-shadow:0 5px 20px rgba(0,212,255,0.4),inset 0 1px 0 rgba(255,255,255,0.2);
-  transition:all .25s;border:none;cursor:pointer;
-}
-.btn-cyan:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 8px 30px rgba(0,212,255,0.6)}
-.btn-cyan:active{transform:translateY(0) scale(0.98)}
-.btn-outline{
-  display:inline-flex;align-items:center;gap:8px;
-  font-family:var(--nunito);font-size:14px;font-weight:900;
-  letter-spacing:1.5px;text-transform:uppercase;
-  color:rgba(255,255,255,0.7);
-  background:transparent;
-  border:1.5px solid rgba(0,212,255,0.25);
-  padding:14px 22px;border-radius:10px;
-  transition:all .25s;
-}
-.btn-outline:hover{border-color:rgba(0,212,255,0.6);color:white;background:rgba(0,212,255,0.06);transform:translateY(-2px)}
+/* HOW TO BUY */
+.steps{display:flex;flex-direction:column;gap:20px;max-width:700px;margin:0 auto}
+.step-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:24px 24px;display:flex;align-items:flex-start;gap:20px;transition:all .4s;cursor:default}
+.step-card:hover{border-color:rgba(255,94,0,0.4);transform:translateX(8px);box-shadow:0 10px 40px rgba(255,94,0,0.1)}
+.step-num{font-family:'Orbitron',sans-serif;font-size:clamp(2rem,5vw,3rem);font-weight:900;color:var(--orange);text-shadow:var(--orange-glow);line-height:1;flex-shrink:0;min-width:50px}
+.step-content h3{font-family:'Orbitron',sans-serif;font-size:clamp(0.9rem,2vw,1.1rem);font-weight:700;color:var(--green);margin-bottom:8px;letter-spacing:1px}
+.step-content p{color:rgba(232,245,255,0.65);font-size:0.9rem;line-height:1.7;font-weight:300}
 
-/* ══ CA BAR ══ */
-.ca-section{position:relative;z-index:2;padding:0 20px 56px}
-.ca-inner{
-  max-width:680px;margin:0 auto;
-  background:var(--card);
-  border:1.5px solid var(--border);
-  border-radius:14px;
-  padding:16px 18px;
-  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
-}
-.ca-tag{
-  font-family:var(--nunito);
-   font-size:10px;font-weight:900;letter-spacing:2px;
-  text-transform:uppercase;color:var(--cyan);white-space:nowrap;
-}
-.ca-addr{
-  font-family:monospace;
-  font-size:12px;font-weight:700;
-  color:rgba(255,255,255,0.65);
-  background:rgba(0,212,255,0.04);
-  border:1px solid rgba(0,212,255,0.08);
-  border-radius:8px;
-  padding:9px 12px;
-  flex:1;min-width:0;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-}
-.ca-copy{
-  font-family:var(--nunito);
-  font-size:11px;font-weight:900;letter-spacing:1px;
-  text-transform:uppercase;
-  color:var(--bg);
-  background:linear-gradient(135deg,var(--cyan),var(--blue));
-  border:none;border-radius:8px;
-  padding:9px 16px;cursor:pointer;white-space:nowrap;
-  transition:all .2s;
-  box-shadow:0 3px 12px rgba(0,212,255,0.35);
-}
-.ca-copy:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(0,212,255,0.55)}
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid rgba(0,255,163,0.1);padding:40px 20px 24px;text-align:center}
+.disclaimer{max-width:700px;margin:0 auto 28px;color:rgba(232,245,255,0.4);font-size:0.78rem;line-height:1.8}
+.disclaimer strong{color:rgba(232,245,255,0.6)}
+.copyright{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:rgba(0,255,163,0.5);text-transform:uppercase}
 
-/* ══ TICKER ══ */
-.ticker{
-  position:relative;z-index:2;
-  overflow:hidden;white-space:nowrap;
-  padding:12px 0;
-  background:linear-gradient(90deg,rgba(0,30,60,0.9),rgba(0,50,100,0.95),rgba(0,30,60,0.9));
-  border-top:1px solid rgba(0,212,255,0.15);
-  border-bottom:1px solid rgba(0,212,255,0.15);
-}
-.ticker-track{display:inline-flex;animation:tick 24s linear infinite}
-.ticker-track span{
-  font-family:var(--fredoka);
-  font-size:15px;letter-spacing:2px;
-  padding:0 22px;color:rgba(255,255,255,0.8);
-}
-.ticker-track .hi{color:var(--cyan);text-shadow:0 0 10px rgba(0,212,255,0.4)}
-.ticker-track .sep{color:rgba(0,212,255,0.3);padding:0 6px}
-@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+/* ANIMATIONS */
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes pulse-orange{0%,100%{opacity:0.3}50%{opacity:0.7}}
+@keyframes glow-pulse{0%,100%{text-shadow:0 0 20px rgba(0,255,163,0.4),0 0 60px rgba(0,255,163,0.15)}50%{text-shadow:0 0 30px rgba(0,255,163,0.7),0 0 90px rgba(0,255,163,0.3)}}
+.logo{animation:glow-pulse 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0px)}50%{transform:translateY(-12px)}}
+.mascot-frame{animation:float 4s ease-in-out infinite}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
 
-/* ══ SECTIONS ══ */
-.section{position:relative;z-index:2;padding:80px 20px}
-.container{max-width:860px;margin:0 auto}
-.sec-eye{
-  display:inline-flex;align-items:center;gap:10px;
-  font-family:var(--nunito);
-    font-size:10px;font-weight:900;letter-spacing:3px;
-  text-transform:uppercase;color:var(--cyan);
-  margin-bottom:12px;
-}
-.sec-eye::before{content:'';display:block;width:20px;height:2px;background:var(--cyan);border-radius:1px;box-shadow:0 0 6px var(--cyan)}
-.sec-title{
-  font-family:var(--fredoka);
-  font-size:clamp(32px,8vw,64px);
-  line-height:1.05;letter-spacing:2px;
-  color:white;margin-bottom:14px;
-}
-.sec-title .c{color:var(--cyan)}
-.sec-title .g{color:var(--gold)}
-.sec-desc{
-  font-size:14px;font-weight:700;
-  color:var(--muted);line-height:1.75;max-width:520px;
-}
+/* DIVIDER */
+.divider{height:1px;background:linear-gradient(to right,transparent,rgba(0,255,163,0.2),transparent);margin:0 auto;max-width:900px}
 
-/* Lore card */
-.lore-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;padding:26px;
-  margin-top:22px;
-  position:relative;overflow:hidden;
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero{flex-direction:column;text-align:center;padding:90px 16px 50px}
+  .hero-content{padding-right:0;margin-bottom:36px}
+  .hero-desc{margin:0 auto 28px}
+  .hero-cta{justify-content:center}
+  .ca-box{max-width:100%}
+  .hero-mascot{width:min(320px,88vw);margin:0 auto}
+  .social-links a{width:32px;height:32px}
 }
-.lore-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,var(--cyan),var(--blue),var(--cyan));
-  background-size:200% 100%;
-  animation:shimmer 3s linear infinite;
+@media(max-width:480px){
+  .ca-address{font-size:0.5rem}
+  .btn-wallet{font-size:10px;padding:8px 12px}
 }
-@keyframes shimmer{0%{background-position:0% 0}100%{background-position:200% 0}}
-.lore-card p{
-  font-size:15px;font-weight:700;
-  color:rgba(255,255,255,0.55);line-height:1.8;
-}
-
-/* ══ TOKENOMICS ══ */
-.toko-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:14px;margin-top:44px;
-}
-@media(max-width:580px){.toko-grid{grid-template-columns:1fr}}
-.toko-card{
-  background:var(--card);
-  border:1px solid rgba(0,212,255,0.06);
-  border-radius:16px;
-  padding:28px 20px;
-  position:relative;overflow:hidden;
-  transition:all .3s;
-}
-.toko-card:hover{
-  transform:translateY(-6px);
-  border-color:rgba(0,212,255,0.2);
-  box-shadow:0 12px 40px rgba(0,212,255,0.1);
-}
-.toko-card::after{
-  content:'';
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 0%,var(--glow),transparent 70%);
-  opacity:0;transition:opacity .3s;
-}
-.toko-card:hover::after{opacity:1}
-.toko-card.c1{--glow:rgba(0,212,255,0.07)}
-.toko-card.c2{--glow:rgba(74,144,226,0.07)}
-.toko-card.c3{--glow:rgba(255,209,102,0.05)}
-.toko-icon{font-size:36px;margin-bottom:16px;display:block;position:relative;z-index:1}
-.toko-val{
-  font-family:var(--orb);
-  font-size:clamp(20px,4vw,30px);font-weight:900;
-  line-height:1;margin-bottom:8px;
-  position:relative;z-index:1;
-}
-.toko-card.c1 .toko-val{color:var(--cyan);text-shadow:0 0 14px rgba(0,212,255,0.3)}
-.toko-card.c2 .toko-val{color:var(--blue)}
-.toko-card.c3 .toko-val{color:var(--gold)}
-.toko-name{
-  font-size:10px;font-weight:900;
-  text-transform:uppercase;letter-spacing:2px;
-  color:rgba(255,255,255,0.5);
-  margin-bottom:10px;
-  position:relative;z-index:1;
-}
-.toko-info{
-  font-size:12px;font-weight:700;
-  color:var(--muted);line-height:1.7;
-  position:relative;z-index:1;
-}
-
-/* ══ WHY GRID ══ */
-.why-grid{
-  display:grid;grid-template-columns:repeat(2,1fr);
-  gap:12px;margin-top:44px;
-}
-@media(max-width:520px){.why-grid{grid-template-columns:1fr}}
-.why-card{
-  background:var(--card);
-  border:1px solid rgba(0,212,255,0.06);
-  border-radius:14px;padding:22px 18px;
-  transition:all .3s;
-}
-.why-card:hover{
-  border-color:rgba(0,212,255,0.2);
-  transform:translateY(-4px);
-  background:var(--card2);
-}
-.why-emo{font-size:30px;margin-bottom:12px;display:block}
-.why-title{
-  font-family:var(--fredoka);
-  font-size:20px;letter-spacing:1px;
-  color:white;margin-bottom:8px;
-}
-.why-desc{
-  font-size:12px;font-weight:700;
-  color:var(--muted);line-height:1.75;
-}
-
-/* ══ HOW TO BUY ══ */
-.steps-wrap{
-  margin-top:48px;
-  display:flex;flex-direction:column;gap:0;
-  max-width:640px;margin-left:auto;margin-right:auto;
-}
-.step{
-  display:grid;grid-template-columns:64px 1fr;
-  gap:18px;padding:26px 0;
-  border-bottom:1px solid rgba(255,255,255,0.04);
-}
-.step:last-child{border-bottom:none}
-.step-numcol{display:flex;flex-direction:column;align-items:center}
-.step-n{
-  font-family:var(--orb);
-  font-size:46px;font-weight:900;line-height:1;
-  color:rgba(0,212,255,0.1);
-  transition:color .3s;letter-spacing:1px;
-}
-.step:hover .step-n{color:rgba(0,212,255,0.3)}
-.step-vline{width:1px;flex:1;background:linear-gradient(to bottom,rgba(0,212,255,0.15),transparent);min-height:14px;margin-top:3px}
-.step:last-child .step-vline{display:none}
-.step-body{padding-top:4px}
-.step-tag{
-  font-size:10px;font-weight:900;letter-spacing:3px;
-  text-transform:uppercase;color:var(--cyan);
-  display:block;margin-bottom:8px;
-}
-.step-title{
-  font-family:var(--fredoka);
-  font-size:26px;letter-spacing:1px;
-  color:white;margin-bottom:8px;
-}
-.step-desc{
-  font-size:13px;font-weight:700;
-  color:var(--muted);line-height:1.75;
-}
-.step-desc strong{color:rgba(255,255,255,0.8)}
-
-/* ══ FAQ ══ */
-.faq-list{
-  margin-top:44px;
-  display:flex;flex-direction:column;gap:10px;
-  max-width:660px;margin-left:auto;margin-right:auto;
-}
-.faq-item{
-  background:var(--card);
-  border:1px solid rgba(0,212,255,0.06);
-  border-radius:12px;overflow:hidden;cursor:pointer;
-  transition:border-color .2s;
-}
-.faq-item:hover{border-color:rgba(0,212,255,0.18)}
-.faq-q{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:16px 18px;
-  background:rgba(0,212,255,0.01);
-}
-.faq-qt{
-  font-family:var(--fredoka);
-  font-size:17px;letter-spacing:.5px;color:white;
-}
-.faq-tog{
-  width:32px;height:32px;border-radius:50%;
-  background:rgba(0,212,255,0.07);
-  border:1.5px solid rgba(0,212,255,0.15);
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;color:var(--cyan);
-  transition:transform .3s,background .2s;
-  flex-shrink:0;
-}
-.faq-item.open .faq-tog{transform:rotate(45deg);background:rgba(0,212,255,0.12);border-color:rgba(0,212,255,0.3)}
-.faq-ans{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;padding:0 18px}
-.faq-item.open .faq-ans{max-height:240px;padding:0 18px 18px}
-.faq-ans p{font-size:13px;font-weight:700;color:var(--muted);line-height:1.8}
-
-/* ══ CTA ══ */
-.cta-section{
-  position:relative;z-index:2;
-  text-align:center;padding:100px 20px;overflow:hidden;
-}
-.cta-glow{
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:80vw;height:300px;
-  background:radial-gradient(ellipse,rgba(0,212,255,0.1) 0%,rgba(74,144,226,0.05) 50%,transparent 70%);
-  border-radius:50%;pointer-events:none;
-  animation:cta-pulse 5s ease-in-out infinite;
-}
-@keyframes cta-pulse{
-  0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.7}
-  50%{transform:translate(-50%,-50%) scale(1.1);opacity:1}
-}
-.cta-coin{
-    width:min(120px,30vw);margin:0 auto 28px;
-  animation:coin-float 4.5s ease-in-out infinite;
-  border-radius:50%;
-  filter:drop-shadow(0 0 24px rgba(0,212,255,0.5));
-  position:relative;z-index:2;
-}
-.cta-title{
-  font-family:var(--fredoka);
-  font-size:clamp(32px,8vw,60px);
-  letter-spacing:2px;line-height:1.05;
-  color:white;margin-bottom:14px;
-  position:relative;z-index:2;
-}
-.cta-title .c{color:var(--cyan)}
-.cta-sub{
-  font-size:14px;font-weight:700;
-  color:var(--muted);line-height:1.7;
-  max-width:460px;margin:0 auto 40px;
-  position:relative;z-index:2;
-}
-.cta-btns{
-  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
-  position:relative;z-index:2;
-}
-
-/* ══ FOOTER ══ */
-footer{
-  position:relative;z-index:2;
-  background:#020810;
-  padding:50px 20px 36px;
-  border-top:1px solid rgba(0,212,255,0.08);
-  text-align:center;
-}
-.footer-coin{
-  width:70px;height:70px;border-radius:50%;margin:0 auto 16px;
-  filter:drop-shadow(0 0 16px rgba(0,212,255,0.4));
-}
-.footer-logo{
-  font-family:var(--fredoka);
-  font-size:42px;letter-spacing:4px;
-  color:var(--cyan);
-  text-shadow:0 0 24px rgba(0,212,255,0.4);
-  margin-bottom:10px;
-}
-.footer-tag{
-  font-size:13px;font-weight:700;
-  color:rgba(255,255,255,0.25);
-  line-height:1.7;max-width:380px;margin:0 auto 22px;
-}
-.footer-links{
-  display:flex;gap:18px;justify-content:center;flex-wrap:wrap;
-  margin-bottom:26px;
-}
-.footer-links a{
-  font-size:11px;font-weight:900;
-  letter-spacing:2px;text-transform:uppercase;
-  color:rgba(255,255,255,0.22);transition:color .2s;
-}
-.footer-links a:hover{color:var(--cyan)}
-.footer-hr{border:none;border-top:1px solid rgba(255,255,255,0.04);margin:18px 0}
-.footer-copy{
-  font-size:11px;font-weight:700;
-  color:rgba(255,255,255,0.15);letter-spacing:1px;margin-bottom:6px;
-}
-.footer-disc{
-  font-size:10px;font-weight:600;
-  color:rgba(255,255,255,0.12);
-  line-height:1.7;max-width:420px;margin:0 auto 16px;
-}
-.footer-by{
-  font-family:var(--fredoka);
-  font-size:16px;letter-spacing:2px;
-  color:rgba(255,255,255,0.2);
-}
-.footer-by span{color:var(--cyan);text-shadow:0 0 10px rgba(0,212,255,0.3)}
-
-/* ══ REVEAL ══ */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
-.reveal.in{opacity:1;transform:translateY(0)}
-.reveal:nth-child(2){transition-delay:.1s}
-.reveal:nth-child(3){transition-delay:.2s}
-.reveal:nth-child(4){transition-delay:.3s}
-.reveal:nth-child(5){transition-delay:.4s}
-
-/* ══ CONFETTI ══ */
-.konfeti{position:fixed;pointer-events:none;z-index:9999;border-radius:3px;animation:kfall 1.4s ease-out forwards}
-@keyframes kfall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(200px) rotate(720deg)}}
 </style>
 </head>
 <body>
-
-<!-- BG SCENE -->
-<div class="bg-scene">
-  <div class="bg-base"></div>
-  <div class="circuit"></div>
-  <div class="scanline"></div>
-  <div class="orb" style="width:500px;height:500px;top:5%;left:15%;background:radial-gradient(circle,rgba(0,212,255,0.1),transparent);--ox:40px;--oy:-30px;animation-duration:14s"></div>
-  <div class="orb" style="width:350px;height:350px;bottom:10%;right:5%;background:radial-gradient(circle,rgba(74,144,226,0.09),transparent);--ox:-30px;--oy:40px;animation-duration:10s;animation-delay:-4s"></div>
-  <div class="orb" style="width:250px;height:250px;top:50%;left:60%;background:radial-gradient(circle,rgba(0,212,255,0.06),transparent);--ox:20px;--oy:-20px;animation-duration:16s;animation-delay:-8s"></div>
-</div>
+<canvas id="particles"></canvas>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">🐧 $PINGU</div>
-  <div class="nav-links">
-    <a href="#tokenomics">Tokenomics</a>
-    <a href="#how-to-buy">How to Buy</a>
-    <a href="#" class="nav-buy">Buy Now ❄️</a>
+  <div class="logo">$RUGAPE<span>🐒</span></div>
+  <div class="nav-right">
+    <div class="social-links">
+      <a href="#" title="X/Twitter" aria-label="X">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="#" title="Telegram" aria-label="Telegram">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      </a>
+      <a href="#" title="Dexscreener" aria-label="Dexscreener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </a>
+    </div>
+    <button class="btn-wallet" onclick="alert('Connect your wallet via Phantom or Solflare!')">🔌 CONNECT</button>
   </div>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-
-  <!-- Spinning coin -->
-  <div class="coin-wrap">
-    <div class="coin-ring2"></div>
-    <div class="coin-ring"></div>
-   <img src="lol.png" alt="lol.png" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; position: relative; z-index: 10;">
-   <div class="coin-shadow"></div>
+<div style="position:relative;z-index:1">
+<section style="max-width:1200px;margin:0 auto;padding:100px 20px 60px;display:flex;align-items:center;flex-wrap:wrap;gap:40px">
+  <div class="hero-content" style="flex:1;min-width:280px">
+    <div class="hero-tag">⚡ SOLANA NETWORK · 2025</div>
+    <h1 style="font-family:'Orbitron',sans-serif;font-size:clamp(1.5rem,4.5vw,3rem);font-weight:900;line-height:1.15;margin-bottom:20px;text-transform:uppercase">
+      THE DEV LAUGHED,<br>
+      BUT <span style="color:var(--green);text-shadow:var(--green-glow)">$RUGAPE</span><br>
+      <span style="color:var(--orange);text-shadow:var(--orange-glow)">TOOK THE RUG!</span>
+    </h1>
+    <p class="hero-desc">
+      The memecoin that mocks the mockers. Every rugpull artist thought they won —
+      until <strong>$RUGAPE</strong> turned the game upside down. Community holds. Dev runs. 
+      But the <span style="color:var(--green)">bags stay full</span>. 🦍💸
+    </p>
+    <div class="hero-cta">
+      <button class="btn-primary">🚀 BUY $RUGAPE</button>
+      <button class="btn-secondary">📊 VIEW CHART</button>
+    </div>
+    <div class="ca-box" style="position:relative">
+      <div>
+        <div class="ca-label">CONTRACT ADDRESS</div>
+        <div class="ca-address" id="ca-text">RuGApExxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+      </div>
+      <button class="btn-copy" onclick="copyCA()">COPY</button>
+      <div class="copy-toast" id="copy-toast">✓ COPIED!</div>
+    </div>
   </div>
-
-  <div class="hero-badge">
-    <span class="live-dot"></span>
-    Live on SUI Blockchain
+  <div class="hero-mascot" style="flex:0 0 auto;width:clamp(260px,38vw,440px)">
+    <div class="mascot-frame"style="position:relative">
+      <div class="mascot-badge">RUG PULL CHAMP</div>
+      <img src="fotoku.png" alt="Rug Pull Champ" style="display: block; width: 100%; max-width: 450px; padding: 12px; border: 3px dashed #ff6600; border-radius: 24px; box-sizing: border-box;">
+</div>
   </div>
-
-  <h1 class="hero-title">$PINGU</h1>
-  <p class="hero-sub">The Coldest Coin on SUI ❄️</p>
-
-  <p class="hero-desc">
-    The chillest, most adorable meme coin waddling across the SUI blockchain.
-    <strong>No rugs. No drama.</strong> Just a tiny penguin with big dreams
-    and even bigger bags. 🐧💙
-  </p>
-
-  <div class="stats-row">
-    <div class="stat"><span class="stat-val">1B</span><span class="stat-lbl">Supply</span></div>
-    <div class="stat"><span class="stat-val">0%</span><span class="stat-lbl">Tax</span></div>
-    <div class="stat"><span class="stat-val">🔥</span><span class="stat-lbl">LP Burnt</span></div>
-    <div class="stat"><span class="stat-val">SUI</span><span class="stat-lbl">Network</span></div>
-  </div>
-
-  <div class="hero-btns">
-    <a href="#" class="btn-cyan" onclick="fireConfetti(event)">❄️ Buy $PINGU</a>
-    <a href="#" class="btn-outline">💬 Telegram</a>
-    <a href="#how-to-buy" class="btn-outline">📖 How to Buy</a>
-  </div>
-
 </section>
-
-<!-- CA -->
-<div class="ca-section">
-  <div class="ca-inner">
-    <span class="ca-tag">📋 Contract</span>
-    <div class="ca-addr" id="caAddr">PiNGu1SuiChain000000000000000000000000000pump</div>
-    <button class="ca-copy" onclick="copyCa()">Copy ❄️</button>
-  </div>
 </div>
 
 <!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-track">
-    <span>🐧 $PINGU</span><span class="sep">✦</span>
-    <span class="hi">THE COLDEST COIN</span><span class="sep">✦</span>
-    <span>❄️ LIVE ON SUI</span><span class="sep">✦</span>
-    <span class="hi">0% TAX</span><span class="sep">✦</span>
-    <span>🔥 LP BURNT 100%</span><span class="sep">✦</span>
-    <span>💙 COMMUNITY OWNED</span><span class="sep">✦</span>
-    <span>🚀 TO THE MOON</span><span class="sep">✦</span>
-    <span>🐧 $PINGU</span><span class="sep">✦</span>
-    <span class="hi">THE COLDEST COIN</span><span class="sep">✦</span>
-    <span>❄️ LIVE ON SUI</span><span class="sep">✦</span>
-    <span class="hi">0% TAX</span><span class="sep">✦</span>
-    <span>🔥 LP BURNT 100%</span><span class="sep">✦</span>
-    <span>💙 COMMUNITY OWNED</span><span class="sep">✦</span>
-    <span>🚀 TO THE MOON</span><span class="sep">✦</span>
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <span class="ticker-item">$RUGAPE 🐒</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">RUG PULL CHAMP</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">DEV LAUGHED LAST</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">1B SUPPLY</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">0% TAX</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">LP BURNED 🔥</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">SOLANA NETWORK</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">$RUGAPE 🐒</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">RUG PULL CHAMP</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">DEV LAUGHED LAST</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">1B SUPPLY</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">0% TAX</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">LP BURNED 🔥</span><span class="ticker-sep">•</span>
+    <span class="ticker-item">SOLANA NETWORK</span><span class="ticker-sep">•</span>
   </div>
-</div>
-
-<!-- LORE -->
-<section class="section">
-  <div class="container">
-    <div class="sec-eye reveal">The Story</div>
-    <h2 class="sec-title reveal">From the <span class="c">Ice</span><br>to the <span class="g">Blockchain.</span></h2>
-    <div class="lore-card reveal">
-      <p>
-        Deep in the frozen blockchain tundra, a tiny penguin stared at a glowing coin
-        and thought: <strong style="color:rgba(0,212,255,0.9)">"I can do better than all those rug pulls."</strong>
-        So PINGU was born — a meme coin forged in the coldest ice and the hottest community energy.
-        No dev wallets. No hidden mints. Just one chilly penguin on a mission
-        to waddle straight to the moon. 🐧❄️🚀
-      </p>
-    </div>
   </div>
-</section>
 
 <!-- TOKENOMICS -->
-<section class="section" id="tokenomics">
-  <div class="container">
-    <div class="sec-eye reveal">Numbers</div>
-    <h2 class="sec-title reveal">Ice Cold <span class="c">Tokenomics</span> ❄️</h2>
-    <p class="sec-desc reveal">Clean, transparent, and frozen in place. No surprises — ever.</p>
-
-    <div class="toko-grid">
-      <div class="toko-card c1 reveal">
-        <span class="toko-icon">🌊</span>
-        <div class="toko-val">1,000,000,000</div>
-        <div class="toko-name">Total Supply</div>
-        <div class="toko-info">Fixed forever. Not one extra PINGU will be minted. The glacier never grows.</div>
-      </div>
-      <div class="toko-card c2 reveal">
-        <span class="toko-icon">💎</span>
-        <div class="toko-val">0%</div>
-        <div class="toko-name">Buy &amp; Sell Tax</div>
-        <div class="toko-info">Zero tax on every swap. Every token you buy goes fully into your wallet.</div>
-      </div>
-        <div class="toko-card c3 reveal">
-        <span class="toko-icon">🔥</span>
-        <div class="toko-val">100% Burnt</div>
-        <div class="toko-name">Liquidity Pool</div>
-        <div class="toko-info">All LP tokens permanently destroyed. No rug pull possible — ever.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- WHY -->
 <section class="section">
-  <div class="container">
-    <div class="sec-eye reveal">Why $PINGU</div>
-    <h2 class="sec-title reveal">Built to <span class="c">Waddle</span> to the Moon 🚀</h2>
-
-    <div class="why-grid">
-      <div class="why-card reveal">
-        <span class="why-emo">🔒</span>
-        <div class="why-title">Locked Forever</div>
-        <div class="why-desc">LP tokens permanently burnt. Zero chance of a rug pull. Sleep easy — the penguin has your back.</div>
-      </div>
-      <div class="why-card reveal">
-        <span class="why-emo">👥</span>
-        <div class="why-title">100% Community</div>
-        <div class="why-desc">Zero team allocation. Every single PINGU belongs to the community from the very first block.</div>
-      </div>
-      <div class="why-card reveal">
-        <span class="why-emo">⚡</span>
-        <div class="why-title">SUI Speed</div>
-        <div class="why-desc">Built on SUI — ultra-fast finality, near-zero fees, and a rapidly growing ecosystem of degens.</div>
-      </div>
-      <div class="why-card reveal">
-        <span class="why-emo">🐧</span>
-        <div class="why-title">Pure Meme Energy</div>
-        <div class="why-desc">No boring whitepaper. No fake roadmap. Just a cute penguin, a great community, and vibes.</div>
-      </div>
+  <h2 class="section-title reveal">ABOUT &amp; <span class="g">TOKENOMICS</span></h2>
+  <p class="section-sub reveal">Total transparency. No bullsh*t. Just vibes &amp; a monkey with a bag.</p>
+  <div class="toke-grid reveal">
+    <div class="toke-card">
+      <div class="toke-icon">💰</div>
+      <div class="toke-value">1 BILLION</div>
+      <div class="toke-label">TOTAL SUPPLY</div>
+    </div>
+    <div class="toke-card">
+      <div class="toke-icon">🚫</div>
+      <div class="toke-value">0%</div>
+      <div class="toke-label">BUY / SELL TAX</div>
+    </div>
+    <div class="toke-card">
+      <div class="toke-icon">🔥</div>
+      <div class="toke-value">100%</div>
+      <div class="toke-label">LP BURNED</div>
+    </div>
+    <div class="toke-card">
+      <div class="toke-icon">🔒</div>
+      <div class="toke-value">REVOKED</div>
+      <div class="toke-label">MINT &amp; FREEZE</div>
     </div>
   </div>
-</section>
+  </section>
 
-<!-- TICKER 2 -->
-<div class="ticker">
-  <div class="ticker-track" style="animation-direction:reverse;animation-duration:28s">
-    <span>❄️ DIAMOND FLIPPERS</span><span class="sep">✦</span>
-    <span class="hi">🐧 WADDLE TO THE MOON</span><span class="sep">✦</span>
-    <span>ICE COLD GAINS</span><span class="sep">✦</span>
-    <span class="hi">💙 CHILL DEGEN</span><span class="sep">✦</span>
-    <span>HOLD THE COLD</span><span class="sep">✦</span>
-    <span class="hi">🚀 BORN ON SUI</span><span class="sep">✦</span>
-    <span>❄️ DIAMOND FLIPPERS</span><span class="sep">✦</span>
-    <span class="hi">🐧 WADDLE TO THE MOON</span><span class="sep">✦</span>
-    <span>ICE COLD GAINS</span><span class="sep">✦</span>
-    <span class="hi">💙 CHILL DEGEN</span><span class="sep">✦</span>
-    <span>HOLD THE COLD</span><span class="sep">✦</span>
-    <span class="hi">🚀 BORN ON SUI</span><span class="sep">✦</span>
-  </div>
-  </div>
+<div class="divider"></div>
 
 <!-- HOW TO BUY -->
-<section class="section" id="how-to-buy">
-  <div class="container">
-    <div class="sec-eye reveal">Instructions</div>
-    <h2 class="sec-title reveal">How to Get <span class="c">$PINGU</span> 🐧</h2>
-
-    <div class="steps-wrap">
-      <div class="step reveal">
-        <div class="step-numcol">
-          <div class="step-n">01</div>
-          <div class="step-vline"></div>
-        </div>
-        <div class="step-body">
-          <span class="step-tag">Setup</span>
-          <div class="step-title">Get a Wallet</div>
-          <div class="step-desc">Download <strong>Sui Wallet</strong> or <strong>Suiet</strong> from the App Store, Google Play, or Chrome extension. Create your wallet and secure your seed phrase — never share it!</div>
-        </div>
-      </div>
-
-      <div class="step reveal">
-        <div class="step-numcol">
-          <div class="step-n">02</div>
-          <div class="step-vline"></div>
-        </div>
-        <div class="step-body">
-          <span class="step-tag">Fund</span>
-          <div class="step-title">Get Some SUI</div>
-          <div class="step-desc">Buy <strong>SUI</strong> from Binance, OKX, or any major exchange. Transfer to your wallet — you'll need SUI for the swap and gas fees.</div>
-        </div>
-      </div>
-
-      <div class="step reveal">
-        <div class="step-numcol">
-          <div class="step-n">03</div>
-          <div class="step-vline"></div>
-        </div>
-        <div class="step-body">
-          <span class="step-tag">Find</span>
-          <div class="step-title">Find $PINGU</div>
-          <div class="step-desc">Go to <strong>Cetus DEX</strong> or <strong>Turbos Finance</strong>. Paste the <strong style="color:var(--cyan)">official $PINGU contract address</strong> from this page only. Never trust DMs!</div>
-        </div>
-      </div>
-
-      <div class="step reveal">
-        <div class="step-numcol">
-          <div class="step-n">04</div>
-          <div class="step-vline"></div>
-        </div>
-        <div class="step-body">
-          <span class="step-tag">Hodl</span>
-          <div class="step-title">Swap &amp; Chill</div>
-          <div class="step-desc">Set slippage to <strong>1–3%</strong>, confirm the swap, and welcome to the flock! Hold your PINGU, spread the memes, and enjoy the ride. ❄️🐧</div>
-        </div>
+<section class="section">
+  <h2 class="section-title reveal">HOW TO <span class="o">BUY</span></h2>
+  <p class="section-sub reveal">Three steps. That's it. Even the dev can follow this — except he already ran. 🐒</p>
+  <div class="steps">
+    <div class="step-card reveal">
+      <div class="step-num">01</div>
+      <div class="step-content">
+        <h3>🦊 GET A SOLANA WALLET</h3>
+        <p>Download <strong>Phantom</strong> or <strong>Solflare</strong> wallet. Create your account and securely store your seed phrase. Never share it — not even with the dev (especially not the dev).</p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="section">
-  <div class="container" style="text-align:center">
-    <div class="sec-eye reveal" style="justify-content:center">FAQ</div>
-    <h2 class="sec-title reveal">Got <span class="c">Questions?</span> 🐧</h2>
-
-    <div class="faq-list">
-      <div class="faq-item reveal" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          <span class="faq-qt">What is $PINGU?</span>
-          <div class="faq-tog">+</div>
-        </div>
-        <div class="faq-ans">
-          <p>$PINGU is the chillest meme coin on the SUI blockchain — a cute little penguin on a shiny blue coin, born to waddle across the blockchain and moon with its community. No rugs, no drama, just ice cold gains. 🐧❄️</p>
-        </div>
+    <div class="step-card reveal">
+      <div class="step-num">02</div>
+      <div class="step-content">
+        <h3>⚡ FUND WITH SOL</h3>
+        <p>Buy <strong>SOL</strong> from any major exchange (Binance, Coinbase, Kraken). Transfer it to your Phantom wallet. You'll need SOL for the swap and gas fees.</p>
       </div>
-
-      <div class="faq-item reveal" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          <span class="faq-qt">Is the liquidity safe?</span>
-          <div class="faq-tog">+</div>
-        </div>
-        <div class="faq-ans">
-          <p>100%. All LP tokens are permanently burnt — not just locked, BURNT forever. There is no mechanism for anyone to remove liquidity. The penguin protects the pool. 🔒🔥</p>
-        </div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <h3>🐒 SWAP FOR $RUGAPE</h3>
+        <p>Head to <strong>Raydium</strong> or <strong>Jupiter</strong>, paste the contract address, and swap your SOL for <strong>$RUGAPE</strong>. Welcome to the rug pull revolution — hold tight!</p>
       </div>
-
-      <div class="faq-item reveal" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          <span class="faq-qt">Why SUI blockchain?</span>
-          <div class="faq-tog">+</div>
-        </div>
-        <div class="faq-ans">
-          <p>SUI offers ultra-fast transaction speeds, near-zero gas fees, and a rapidly growing DeFi ecosystem. The penguin chose SUI because even penguins love efficiency. ⚡❄️</p>
-        </div>
       </div>
-
-      <div class="faq-item reveal" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          <span class="faq-qt">Wen moon? 🚀</span>
-          <div class="faq-tog">+</div>
-        </div>
-        <div class="faq-ans">
-          <p>When the flock is big enough to fly. PINGU is patient — penguins always are. But the community is growing every day and the energy is ice cold in the best possible way. Join us and waddle to the moon together! 🐧🚀</p>
-        </div>
+    <div class="step-card reveal">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <h3>🐒 SWAP FOR $RUGAPE</h3>
+        <p>Head to <strong>Raydium</strong> or <strong>Jupiter</strong>, paste the contract address, and swap your SOL for <strong>$RUGAPE</strong>. Welcome to the rug pull revolution — hold tight!</p>
       </div>
-        </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section">
-  <div class="cta-glow"></div>
-  <img src="lol.png" alt="lol" style="width: 30%; max-width: 120px; height: auto; border-radius: 50%;">
-  <h2 class="cta-title reveal">Join the <span class="c">Flock</span> 🐧</h2>
-  <p class="cta-sub reveal">
-    $PINGU is waddling fast and the community is growing every day.
-    Join the coldest crew on SUI, spread the memes, and help PINGU
-    become the most legendary penguin coin on the blockchain.
-  </p>
-  <div class="cta-btns reveal">
-    <a href="#" class="btn-cyan" onclick="fireConfetti(event)">❄️ Buy $PINGU Now</a>
-    <a href="#" class="btn-outline">🐦 Twitter / X</a>
-    <a href="#" class="btn-outline">💬 Telegram</a>
-    <a href="#" class="btn-outline">📊 Dexscreener</a>
+    </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <img src="lol.png" alt="lol-small" style="width: 25%; max-width: 90px; height: auto; border-radius: 50%; object-fit: cover;">
-<div class="footer-logo">$PINGU</div>
-  <p class="footer-tag">
-    The coldest coin on SUI —<br>
-    waddling through the blockchain one block at a time. 🐧❄️
+  <p class="disclaimer">
+    <strong>⚠️ DISCLAIMER:</strong> $RUGAPE is a satirical meme coin created for entertainment purposes only. This is NOT financial advice. Cryptocurrency investments carry extreme risk — you could lose all your money. Only invest what you can afford to lose. This project does not guarantee any returns. DYOR (Do Your Own Research) before investing in any crypto asset. The team is not responsible for any financial losses.
   </p>
-  <div class="footer-links">
-    <a href="#">Twitter</a>
-    <a href="#">Telegram</a>
-    <a href="#">Cetus DEX</a>
-    <a href="#">Turbos</a>
-    <a href="#">Dexscreener</a>
-  </div>
-  <hr class="footer-hr">
-  <p class="footer-copy">© 2026 $PINGU. ALL RIGHTS RESERVED.</p>
-  <p class="footer-disc">$PINGU is a meme coin with no intrinsic value or expectation of financial return. For entertainment purposes only. Always do your own research. Never invest more than you can afford to lose.</p>
-  <p class="footer-by">by <span>Al Anshori</span></p>
+  <div class="copyright">© 2026 AL ANSHORI. ALL RIGHTS RESERVED.</div>
 </footer>
 
 <script>
-/* Snow particles */
-const bg = document.querySelector('.bg-scene');
-for(let i=0;i<30;i++){
-  const s=document.createElement('div');
-  s.className='snow';
-  const sz=2+Math.random()*4;
-  const dx=(Math.random()-.5)*200;
-  s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*30}%;opacity:${.3+Math.random()*.5};--dx:${dx}px;animation-duration:${8+Math.random()*14}s;animation-delay:${Math.random()*12}s`;
-  bg.appendChild(s);
+// PARTICLES
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+function Particle(){
+  this.x=Math.random()*W;this.y=Math.random()*H;
+  this.r=Math.random()*1.5+0.5;
+  this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;
+  this.life=Math.random();
+  this.color=Math.random()>.5?'0,255,163':'255,94,0';
 }
-
-/* Copy CA */
-function copyCa(){
-  const t=document.getElementById('caAddr').textContent.trim();
-  navigator.clipboard.writeText(t).then(()=>{
-    const b=document.querySelector('.ca-copy');
-    b.textContent='✅ Copied!';
-    fireConfettiCenter();
-    setTimeout(()=>b.textContent='Copy ❄️',2500);
+for(let i=0;i<80;i++)particles.push(new Particle());
+function animate(){
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{
+    p.life+=0.003;if(p.life>1)p.life=0;
+    const a=Math.sin(p.life*Math.PI)*.6;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${p.color},${a})`;ctx.fill();
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+    if(p.y<0)p.y=H;if(p.y>H)p.y=0;
   });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// COPY CA
+function copyCA(){
+  const ca=document.getElementById('ca-text').textContent;
+  navigator.clipboard.writeText(ca).catch(()=>{});
+  const t=document.getElementById('copy-toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
 }
 
-/* FAQ */
-function toggleFaq(el){
-  const o=el.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
-  if(!o) el.classList.add('open');
-}
-
-/* Scroll reveal */
+// SCROLL REVEAL
 const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')});
-},{threshold:0.08});
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.15});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-
-/* Confetti */
-const kc=['#00D4FF','#4A90E2','#FFFFFF','#FFD166','#B8D4F0','#7AABDC','#00A8D4'];
-function spawn(x,y){
-  for(let i=0;i<40;i++){
-    const k=document.createElement('div');
-    k.className='konfeti';
-    const ang=(i/40)*360,dist=70+Math.random()*110;
-    const rad=ang*Math.PI/180;
-    k.style.cssText=`left:${x+Math.cos(rad)*dist}px;top:${y}px;width:${6+Math.random()*9}px;height:${6+Math.random()*9}px;background:${kc[Math.floor(Math.random()*kc.length)]};border-radius:${Math.random()>.4?'50%':'2px'};animation-duration:${.9+Math.random()*.7}s;animation-delay:${Math.random()*.1}s`;
-    document.body.appendChild(k);
-    setTimeout(()=>k.remove(),2000);
-  }
-}
-function fireConfetti(e){spawn(e.clientX,e.clientY)}
-function fireConfettiCenter(){spawn(window.innerWidth/2,window.innerHeight/2)}
 </script>
 </body>
 </html>
